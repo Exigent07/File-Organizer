@@ -87,7 +87,6 @@ def creatAndMove(path, filesTypes):
     ".java": "Java Source Files",
     ".cpp": "C++ Source Files",
     ".c": "C Source Files",
-    "none": "Unknown",
     ".key": "KeyNote Presentations",
     ".iso": "Disk Images",
     ".torrent": "Torrent files"
@@ -102,6 +101,12 @@ def creatAndMove(path, filesTypes):
             folders = filesTypes["folder"]
             for folder in folders:
                 insideFolder(path, folder)
+        if ext == "none":
+            nones = filesTypes["none"]
+            for none in nones:
+                makeDIR("Unknown", path)
+                shutil.move((path + "/" + none), (path + "/" + "Unknown" + "/" + none))
+                
         extension = "." + ext
         if extension in fileExtensions.keys():
             dirNames.append(fileExtensions[extension])
