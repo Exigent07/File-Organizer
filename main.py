@@ -3,6 +3,19 @@ import shutil
 
 # Declaring functions
 
+# Function for organizing files inside folders
+def insideFolder(path, folder):
+    path = path + "/" + folder
+
+    files = findFiles(path)
+    typeCount = findType(files, path)
+    isWorkDone = creatAndMove(path, typeCount)
+
+    if isWorkDone:
+        print("Organizing folder %s is Successful" %folder)
+    else:
+        print("Something Went Wrong XD")
+
 # Function for creating a Directory
 def makeDIR(name, parentDIR):
     try:
@@ -17,7 +30,7 @@ def findFiles(path):
 
     for item in (os.listdir(path)):
         currentFile = item
-        if (currentFile[:1] == "."):
+        if (currentFile[:1] == ".") or (currentFile == "main.py") or (currentFile == "README.md"):
             continue
         else:
             filesInFolder.append(currentFile)
@@ -25,12 +38,18 @@ def findFiles(path):
     return filesInFolder
 
 # Function to find the types of files and their count
-def findType(files):
+def findType(files, path):
     typesOfExt = {}
     for current in files:
         currentFile = list(current)
-        indexOfHidden = currentFile.index(".")
-        currentExt = "".join(currentFile[char] for char in range(indexOfHidden + 1, len(currentFile)))
+        try:
+            indexOfHidden = currentFile.index(".")
+            currentExt = "".join(currentFile[char] for char in range(indexOfHidden + 1, len(currentFile)))
+        except:
+            if os.path.isdir(path + "/" + current):
+                currentExt = "folder"
+            else:
+                currentExt = "none"
         try:
             if typesOfExt[currentExt]:
                 typesOfExt[currentExt].append(current)
@@ -39,6 +58,7 @@ def findType(files):
 
     return typesOfExt
 
+# Function to create folder and move files
 def creatAndMove(path, filesTypes):
     fileExtensions = {
     ".txt": "Text Files",
@@ -50,6 +70,7 @@ def creatAndMove(path, filesTypes):
     ".pptx": "PowerPoint Presentations",
     ".pdf": "PDF Files",
     ".jpg": "JPEG Image Files",
+    ".jpeg": "JPEG Image Files",
     ".png": "PNG Image Files",
     ".gif": "GIF Image Files",
     ".mp3": "MP3 Audio Files",
@@ -62,9 +83,14 @@ def creatAndMove(path, filesTypes):
     ".css": "CSS Stylesheets",
     ".js": "JavaScript Files",
     ".py": "Python Scripts",
+    ".ipynb": "Jupiter NoteBook Files",
     ".java": "Java Source Files",
     ".cpp": "C++ Source Files",
     ".c": "C Source Files",
+    "none": "Unknown",
+    ".key": "KeyNote Presentations",
+    ".iso": "Disk Images",
+    ".torrent": "Torrent files"
 }
     types = []
     dirNames = []
@@ -72,6 +98,10 @@ def creatAndMove(path, filesTypes):
     for key in filesTypes.keys():
         types.append(key)
     for ext in types:
+        if ext == "folder":
+            folders = filesTypes["folder"]
+            for folder in folders:
+                insideFolder(path, folder)
         extension = "." + ext
         if extension in fileExtensions.keys():
             dirNames.append(fileExtensions[extension])
@@ -82,12 +112,12 @@ def creatAndMove(path, filesTypes):
         for moveFiles in files:
             shutil.move((path + "/" + moveFiles), (path + "/" + name + "/" + moveFiles))
     return True
+
 # Testing 
-path = os.getcwd() + "/TestFolder"
+path = os.getcwd()
 
 files = findFiles(path)
-typeCount = findType(files)
-
+typeCount = findType(files, path)
 isWorkDone = creatAndMove(path, typeCount)
 
 if isWorkDone:
