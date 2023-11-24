@@ -1,5 +1,7 @@
 import os
 import shutil
+import prettytable
+import time
 
 # Declaring functions
 
@@ -118,14 +120,59 @@ def creatAndMove(path, filesTypes):
             shutil.move((path + "/" + moveFiles), (path + "/" + name + "/" + moveFiles))
     return True
 
+# Pretty Table
+initial_head = prettytable.PrettyTable()
+initial_mid = prettytable.PrettyTable()
+organizing = prettytable.PrettyTable()
+close = prettytable.PrettyTable()
+notFound = prettytable.PrettyTable()
+
+initial_head.field_names = ["SI No", "Function"]
+initial_head.add_row(["1", "Organize"])
+initial_head.add_row(["2", "Exit"])
+initial_head.add_row(["↓", "Enter the Selection"])
+
+organizing.field_names = ["---Organizing---"]
+organizing.add_row(["Wait for a moment..."])
+
+close.field_names = ["You chose to exit"]
+close.add_row(["Exiting..."])
+
+notFound.field_names = ["Invalid input!"]
+notFound.add_row(["Exiting..."])
+
 # Testing 
-path = os.getcwd()
+isOrganize = True
 
-files = findFiles(path)
-typeCount = findType(files, path)
-isWorkDone = creatAndMove(path, typeCount)
+while isOrganize:
+    print(initial_head)
+    selection = int(input("Input: "))
+    if selection == 1:
+        print(organizing)
+    elif selection == 2:
+        print(close)
+        isOrganize == False
+        break
+    else:
+        print(notFound)
+        isOrganize == False
+        break
 
-if isWorkDone:
-    print("Organizing Successful!!")
-else:
-    print("Something Went Wrong XD")
+    path = os.getcwd()
+
+    files = findFiles(path)
+    typeCount = findType(files, path)
+    isWorkDone = creatAndMove(path, typeCount)
+
+    if isWorkDone:
+        initial_mid.field_names = ["Organizing Successful!!"]
+        initial_mid.add_row(["Returning to menu in 2 seconds...."])
+        print(initial_mid)
+        time.sleep(2)
+        os.system("cls")
+    else:
+        initial_mid.field_names = ["Something Went Wrong!!"]
+        initial_mid.add_row(["Returning to menu in 2 seconds...."])
+        print(initial_mid)
+        time.sleep(2)
+        os.system("cls")
