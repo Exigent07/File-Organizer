@@ -15,8 +15,6 @@ class MainWindow(QMainWindow):
         greet = QLabel("Welcome to File Organizer")
         greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
 
-        self.folder = None
-
         self.organize = QPushButton("Organize", self)
         self.organize.setStyleSheet("background-color: #f5f5dc; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
         self.organize.setCheckable(True)
@@ -89,10 +87,14 @@ class MainWindow(QMainWindow):
             print(path)
 
     def organizing(self):
-        print(self.folder)
-        organizeFolder(self.folder)    
-        widget.setCurrentIndex(2)
-        print("Organized")
+        folder = self.inputBox.text()
+        print(folder)
+        if folder == "":
+            print("Enter a Folder Path")
+        else:
+            organizeFolder(folder)    
+            widget.setCurrentIndex(2)
+            print("Organized")
 
     def quit(self):
         widget.setCurrentIndex(1)

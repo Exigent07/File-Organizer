@@ -45,7 +45,8 @@ def organizeFolder(folderPath):
             currentFile = list(current)
             try:
                 indexOfHidden = currentFile.index(".")
-                currentExt = "".join(currentFile[char] for char in range(indexOfHidden + 1, len(currentFile)))
+                currentExt = "." + "".join(currentFile[char] for char in range(indexOfHidden + 1, len(currentFile)))
+                # print("FindType: ", currentExt)
             except:
                 if os.path.isdir(path + "/" + current):
                     currentExt = "folder"
@@ -64,13 +65,13 @@ def organizeFolder(folderPath):
         fileExtensions = {
         ".txt": "Text Files",
         ".doc": "Word Documents",
-        ".docx": "Word Documents",
+        ".docx": "WordX Documents",
         ".xls": "Excel Spreadsheets",
         ".xlsx": "Excel Spreadsheets",
         ".ppt": "PowerPoint Presentations",
-        ".pptx": "PowerPoint Presentations",
+        ".pptx": "PowerPoint TX Presentations",
         ".pdf": "PDF Files",
-        ".jpg": "JPEG Image Files",
+        ".jpg": "JPG Image Files",
         ".jpeg": "JPEG Image Files",
         ".png": "PNG Image Files",
         ".gif": "GIF Image Files",
@@ -100,20 +101,25 @@ def organizeFolder(folderPath):
         for ext in types:
             if ext == "folder":
                 folders = filesTypes["folder"]
+                # print("Folders", folders)
                 for folder in folders:
                     insideFolder(path, folder)
-            if ext == "none":
+            elif ext == "none":
                 nones = filesTypes["none"]
                 for none in nones:
                     makeDIR("Unknown", path)
                     shutil.move((path + "/" + none), (path + "/" + "Unknown" + "/" + none))
-                    
-            extension = "." + ext
-            if extension in fileExtensions.keys():
-                dirNames.append(fileExtensions[extension])
+            else:
+                extension = ext
+                # print(extension)
+                if extension in fileExtensions.keys():
+                    dirNames.append(fileExtensions[extension])
+                    print(fileExtensions[extension])
         for name in dirNames:
+            # print("Name:", name)
             makeDIR(name, path)
-            CurrentExt = list(fileExtensions.keys())[list(fileExtensions.values()).index(name)][1:]
+            CurrentExt = "." + list(fileExtensions.keys())[list(fileExtensions.values()).index(name)][1:]
+            print(CurrentExt)
             files = filesTypes[CurrentExt]
             for moveFiles in files:
                 shutil.move((path + "/" + moveFiles), (path + "/" + name + "/" + moveFiles))
