@@ -1,7 +1,7 @@
 import os
 import shutil
 
-def organizeFolder():
+def organizeFolder(folderPath):
     # Declaring functions
 
     # Function for organizing files inside folders
@@ -119,7 +119,7 @@ def organizeFolder():
                 shutil.move((path + "/" + moveFiles), (path + "/" + name + "/" + moveFiles))
         return True
 
-    path = os.getcwd()
+    path = folderPath
 
     files = findFiles(path)
     typeCount = findType(files, path)
