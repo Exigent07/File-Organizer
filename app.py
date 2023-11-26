@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
 
     def organizing(self):
         organizeFolder()
+        widget.setCurrentIndex(2)
         print("Organized")
 
     def quit(self):
@@ -100,7 +101,36 @@ class QuitWindow(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-        layout.setContentsMargins(0, 0, 0, 0)
+class OrganizeIt(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        path = "C:/Users/aravi/Downloads/folder.png"
+        self.setStyleSheet("background-color: #ffa07a;")
+        self.setWindowTitle("File Organizer")
+        self.setWindowIcon(QIcon(path))
+
+        greet = QLabel("Successfully Organized!!")
+        greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
+
+        self.fileOrganizer = QLabel(self)
+        pix = QPixmap(path)
+        resized =  pix.scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio)
+        self.fileOrganizer.setPixmap(QPixmap(resized))
+        self.fileOrganizer.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.exit = QPushButton("Exit")
+        self.exit.setStyleSheet("background-color: #f5f5dc; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
+        self.exit.setCheckable(True)
+        self.exit.setFixedSize(110, 40)
+        self.exit.pressed.connect(self.exit_pressed)
+        self.exit.released.connect(self.exit_released)
+        self.exit.clicked.connect(self.bye)
+
+        layout = QVBoxLayout()
+        layout.addWidget(greet, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.fileOrganizer, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.exit, alignment=Qt.AlignmentFlag.AlignCenter)
 
         central_widget = QWidget()
         central_widget.setLayout(layout)
@@ -108,28 +138,30 @@ class QuitWindow(QMainWindow):
 
         self.setFixedSize(500, 500)
 
-    def organize_pressed(self):
-        self.organize.setStyleSheet("background-color: #d2b48c; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
-    def organize_released(self):
-        self.organize.setStyleSheet("background-color: #f5f5dc; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
-
     def exit_pressed(self):
         self.exit.setStyleSheet("background-color: #d2b48c; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
     def exit_released(self):
         self.exit.setStyleSheet("background-color: #f5f5dc; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
 
-    def organizing(self):
-        organizeFolder()
-        print("Organized")
+    def bye(self):
+        widget.setCurrentIndex(1)
+        QTimer.singleShot(1000, self.exit_application)
+
+    def exit_application(self):
+        print("Exited Successfully!")
+        sys.exit()
+
 
 app = QApplication(sys.argv)
 
 widget = QtWidgets.QStackedWidget()
 window = MainWindow()
 close = QuitWindow()
+organized = OrganizeIt()
 
 widget.addWidget(window)
 widget.addWidget(close)
+widget.addWidget(organized)
 path = "C:/Users/aravi/Downloads/folder.png"
 widget.setStyleSheet("background-color: #ffa07a;")
 widget.setWindowTitle("File Organizer")
