@@ -91,7 +91,8 @@ def organizeFolder(folderPath):
         ".c": "C Source Files",
         ".key": "KeyNote Presentations",
         ".iso": "Disk Images",
-        ".torrent": "Torrent files"
+        ".torrent": "Torrent files",
+        "unknown": "Unknown"
     }
         types = []
         dirNames = []
@@ -103,6 +104,10 @@ def organizeFolder(folderPath):
                 folders = filesTypes["folder"]
                 # print("Folders", folders)
                 for folder in folders:
+                    # print(folder)
+                    if folder in fileExtensions.values():
+                        # print("Hit the folder loop")
+                        continue
                     insideFolder(path, folder)
             elif ext == "none":
                 nones = filesTypes["none"]
@@ -119,7 +124,7 @@ def organizeFolder(folderPath):
             # print("Name:", name)
             makeDIR(name, path)
             CurrentExt = "." + list(fileExtensions.keys())[list(fileExtensions.values()).index(name)][1:]
-            print(CurrentExt)
+            # print(CurrentExt)
             files = filesTypes[CurrentExt]
             for moveFiles in files:
                 shutil.move((path + "/" + moveFiles), (path + "/" + name + "/" + moveFiles))
