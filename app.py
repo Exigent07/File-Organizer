@@ -11,8 +11,8 @@ class MainWindow(QMainWindow):
         path = "C:/Users/aravi/Downloads/folder.png"
         super().__init__()
         self.setStyleSheet("background-color: #ffa07a;")
-        greet = QLabel("Welcome to File Organizer")
-        greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
+        self.greet = QLabel("Welcome to File Organizer")
+        self.greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
 
         self.organize = QPushButton("Organize", self)
         self.organize.setStyleSheet("background-color: #f5f5dc; color: #2f4f4f; border-radius: 10px; font-weight: 650; border: 0.5px solid #2f4f4f")
@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
         self.exit.clicked.connect(self.quit)
 
         layout = QGridLayout()
-        layout.addWidget(greet, 0, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.greet, 0, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.fileOrganizer, 1, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.label, 2, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignRight)
         layout.addWidget(self.inputBox, 2, 1, 1, 1, alignment=Qt.AlignmentFlag.AlignLeft)
@@ -94,10 +94,11 @@ class MainWindow(QMainWindow):
         folder = self.inputBox.text()
         # print(folder)
         if folder == "":
-            print("Enter a Folder Path")
+            self.greet.setText("Enter a Folder Path!")
         else:
             organizeFolder(folder)
-            self.inputBox.setText("")   
+            self.inputBox.setText("")
+            self.greet.setText("Select another Folder!")
             widget.setCurrentIndex(2)
             print("Organized")
 
@@ -118,8 +119,8 @@ class QuitWindow(QMainWindow):
         self.setWindowTitle("File Organizer")
         self.setWindowIcon(QIcon(path))
 
-        greet = QLabel("Thanks for using File Organizer")
-        greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
+        self.greet = QLabel("Thanks for using File Organizer")
+        self.greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
 
         self.fileOrganizer = QLabel(self)
         pix = QPixmap(path)
@@ -131,7 +132,7 @@ class QuitWindow(QMainWindow):
         bye.setStyleSheet("color: #2f4f4f; font-size: 19px; text-align: center; font-weight: bold;")
 
         layout = QVBoxLayout()
-        layout.addWidget(greet, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.greet, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.fileOrganizer, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(bye, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -148,8 +149,8 @@ class OrganizeIt(QMainWindow):
         self.setWindowTitle("File Organizer")
         self.setWindowIcon(QIcon(path))
 
-        greet = QLabel("Successfully Organized!!")
-        greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
+        self.greet = QLabel("Successfully Organized!!")
+        self.greet.setStyleSheet("color: #2f4f4f; font-size: 22px; text-align: center; font-weight: bold;") 
 
         self.fileOrganizer = QLabel(self)
         pix = QPixmap(path)
@@ -174,7 +175,7 @@ class OrganizeIt(QMainWindow):
         self.exit.clicked.connect(self.quit)
 
         layout = QVBoxLayout()
-        layout.addWidget(greet, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.greet, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.fileOrganizer, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.prev, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.exit, alignment=Qt.AlignmentFlag.AlignCenter)
