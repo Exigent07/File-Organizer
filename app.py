@@ -93,8 +93,9 @@ class MainWindow(QMainWindow):
     def organizing(self):
         folder = self.inputBox.text()
         # print(folder)
-        if folder == "":
+        if folder == "" or not os.path.isdir(folder):
             self.greet.setText("Enter a Folder Path!")
+            self.inputBox.setText("")
         else:
             organizeFolder(folder)
             self.inputBox.setText("")
